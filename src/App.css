@@ -210,6 +210,42 @@
   margin: 0;
 }
 
+.topic-filter {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.topic-filter label {
+  color: #cbd5e1;
+}
+
+.topic-filter input {
+  flex: 1;
+  border: 1px solid #2b4b6b;
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.topic-filter input::placeholder {
+  color: #94a3b8;
+}
+
+.topic-group {
+  margin-bottom: 22px;
+}
+
+.topic-group h2 {
+  font-size: 1.1rem;
+  margin: 0 0 10px;
+  color: #cbd5e1;
+  font-weight: 700;
+  text-align: left;
+}
+
 
 .flashcard {
   background: #0d1321;

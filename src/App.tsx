@@ -2,12 +2,14 @@ import { useState } from 'react'
 import './App.css'
 
 type Flashcard = {
+  id: number
   question: string
   answer: string
   detailedAns: string
+  topic: string
 }
 
-const flashcards: Flashcard[] = [
+const flashcardsRaw = [
   {
     question: 'Smart vs Dumb Components?',
     answer: 'Smart = logic/state, Dumb = UI',
@@ -214,60 +216,91 @@ const flashcards: Flashcard[] = [
   },
 ]
 
+const inferTopic = (question: string) => {
+  const q = question.toLowerCase()
+  if (q.includes('component')) return 'Components'
+  if (q.includes('state')) return 'State'
+  if (q.includes('performance') || q.includes('debounce') || q.includes('throttle') || q.includes('virtualization') || q.includes('lazy') || q.includes('code splitting') || q.includes('tree shaking') || q.includes('asset')) return 'Performance'
+  if (q.includes('rest') || q.includes('graphql') || q.includes('n+1') || q.includes('swr') || q.includes('react query') || q.includes('pagination') || q.includes('infinite') || q.includes('loading') || q.includes('error') || q.includes('empty')) return 'Data'
+  if (q.includes('indexeddb') || q.includes('service worker') || q.includes('background sync') || q.includes('conflict') || q.includes('jwt') || q.includes('cookies') || q.includes('xss') || q.includes('csrf')) return 'Security'
+  if (q.includes('csr') || q.includes('ssr') || q.includes('ssg') || q.includes('isr') || q.includes('hydration') || q.includes('webpack') || q.includes('vite') || q.includes('microfrontend') || q.includes('module federation')) return 'Architecture'
+  if (q.includes('websocket') || q.includes('polling') || q.includes('event-driven') || q.includes('reconnections')) return 'Realtime'
+  if (q.includes('unit') || q.includes('integration') || q.includes('e2e') || q.includes('jest') || q.includes('rtl') || q.includes('cypress') || q.includes('hooks')) return 'Testing'
+  return 'General'
+}
+
+const flashcards: Flashcard[] = flashcardsRaw.map((item, idx) => ({
+  ...item,
+  id: idx,
+  topic: inferTopic(item.question),
+}))
+
 function App() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const [detailsOpen, setDetailsOpen] = useState<Set<number>>(new Set())
 
-  const toggleCard = (index: number) => {
-    setOpenIndex((prev) => (prev === index ? null : index))
+  const toggleCard = (id: number) => {
+    setOpenIndex((prev) => (prev === id ? null : id))
   }
 
-  const toggleDetails = (index: number) => {
+  const toggleDetails = (id: number) => {
     setDetailsOpen((prev) => {
       const next = new Set(prev)
-      if (next.has(index)) next.delete(index)
-      else next.add(index)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
       return next
     })
   }
+
+  const groupedFlashcards = flashcards.reduce<Record<string, Flashcard[]>>((acc, card) => {
+    const key = card.topic || 'General'
+    if (!acc[key]) acc[key] = []
+    acc[key].push(card)
+    return acc
+  }, {})
 
   return (
     <main className="flashcards-shell">
       <h1>React / Frontend Flashcards</h1>
       <section className="flashcards-container">
-        {flashcards.map((card, index) => {
-          const cardOpen = openIndex === index
-          const cardDetailsOpen = detailsOpen.has(index)
+        {Object.entries(groupedFlashcards).map(([topic, cards]) => (
+          <div key={topic} className="topic-group">
+            <h2>{topic}</h2>
+            {cards.map((card) => {
+              const cardOpen = openIndex === card.id
+              const cardDetailsOpen = detailsOpen.has(card.id)
 
-          return (
-            <article key={index} className={`flashcard ${cardOpen ? 'open' : ''}`}>
-              <button
-                className="flashcard-question"
-                onClick={() => toggleCard(index)}
-                aria-expanded={cardOpen}
-              >
-                <span>{card.question}</span>
-                <span className="arrow">{cardOpen ? '▾' : '▸'}</span>
-              </button>
-
-              {cardOpen && (
-                <div className="flashcard-answer-area">
-                  <p className="flashcard-answer">{card.answer}</p>
+              return (
+                <article key={card.id} className={`flashcard ${cardOpen ? 'open' : ''}`}>
                   <button
-                    className="details-toggle"
-                    onClick={() => toggleDetails(index)}
-                    aria-expanded={cardDetailsOpen}
+                    className="flashcard-question"
+                    onClick={() => toggleCard(card.id)}
+                    aria-expanded={cardOpen}
                   >
-                    {cardDetailsOpen ? 'Hide details' : 'Show details'}
+                    <span>{card.question}</span>
+                    <span className="arrow">{cardOpen ? '▾' : '▸'}</span>
                   </button>
-                  {cardDetailsOpen && (
-                    <div className="flashcard-detailed">{card.detailedAns}</div>
+
+                  {cardOpen && (
+                    <div className="flashcard-answer-area">
+                      <p className="flashcard-answer">{card.answer}</p>
+                      <button
+                        className="details-toggle"
+                        onClick={() => toggleDetails(card.id)}
+                        aria-expanded={cardDetailsOpen}
+                      >
+                        {cardDetailsOpen ? 'Hide details' : 'Show details'}
+                      </button>
+                      {cardDetailsOpen && (
+                        <div className="flashcard-detailed">{card.detailedAns}</div>
+                      )}
+                    </div>
                   )}
-                </div>
-              )}
-            </article>
-          )
-        })}
+                </article>
+              )
+            })}
+          </div>
+        ))}
       </section>
     </main>
   )
