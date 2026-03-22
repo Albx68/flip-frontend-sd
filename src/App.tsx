@@ -9,6 +9,141 @@ type Flashcard = {
   topic: string
 }
 
+type BehavioralCard = {
+  id: number
+  question: string
+  answer: string
+  detailedAns: string
+}
+
+const behavioralRaw = [
+  {
+    question: 'Tell me about yourself',
+    answer: 'Present → Past → Strength → Why',
+    detailedAns:
+      'Start with your current role and experience, then briefly mention past work, highlight your strengths (performance, system design, etc.), and end with what you\'re looking for. Keep it concise and impact-driven.',
+  },
+  {
+    question: 'Tell me about a time you took ownership',
+    answer: 'Strapi automation story',
+    detailedAns:
+      'Talk about reducing page creation time from 2+ days to under 2 minutes using Strapi CMS. Emphasize identifying a bottleneck, taking initiative, collaborating with stakeholders, and delivering business impact.',
+  },
+  {
+    question: 'Tell me about your biggest impact',
+    answer: 'Performance optimization story',
+    detailedAns:
+      'Discuss improving Lighthouse scores from 30–40 to 70+ and LPVR from 35–40 to 70+. Highlight leading a team, implementing code splitting, lazy loading, and tying performance improvements to business metrics.',
+  },
+  {
+    question: 'Tell me about a time you handled ambiguity',
+    answer: 'Smart ring / offline-first architecture',
+    detailedAns:
+      'Explain unclear requirements across hardware, firmware, and frontend. Show how you defined architecture, collaborated cross-functionally, and reduced latency from 2–4s to sub-500ms.',
+  },
+  {
+    question: 'Tell me about leadership experience',
+    answer: 'Led team of 5 engineers',
+    detailedAns:
+      'Describe leading a team for the smart ring module, defining architecture, coordinating across teams, and improving development velocity. Focus on enabling others, not just managing tasks.',
+  },
+  {
+    question: 'Tell me about a failure',
+    answer: 'Misdiagnosed performance issue',
+    detailedAns:
+      'Explain how you focused only on bundle size and missed runtime issues. Show how you corrected it using better state management and learned to take a holistic approach.',
+  },
+  {
+    question: 'Tell me about a disagreement',
+    answer: 'A/B testing tool story',
+    detailedAns:
+      'Describe conflict between product (speed) and engineering (stability). Show how you reframed the problem and built a browser-based experimentation tool to satisfy both sides.',
+  },
+  {
+    question: 'Tell me about a tight deadline',
+    answer: 'Performance before campaign',
+    detailedAns:
+      'Talk about improving performance under a business deadline. Highlight prioritization, focusing on high-impact fixes, and balancing speed vs perfection.',
+  },
+  {
+    question: 'Tell me about stakeholder management',
+    answer: 'Product vs engineering alignment',
+    detailedAns:
+      'Explain how you aligned product and engineering teams, communicated tradeoffs, and ensured both speed and stability through system design (e.g., experimentation tool).',
+  },
+  {
+    question: 'Tell me about a technical tradeoff',
+    answer: 'Offline-first vs API-driven',
+    detailedAns:
+      'Explain choosing offline-first architecture over API-driven approach for better latency. Discuss tradeoffs like complexity vs performance and why your decision worked.',
+  },
+  {
+    question: 'What are your strengths?',
+    answer: 'Performance + product thinking',
+    detailedAns:
+      'Highlight your ability to combine frontend performance, system design, and product impact. Mention real examples like improving LPVR and building growth systems.',
+  },
+  {
+    question: 'What is your weakness?',
+    answer: 'Over-optimizing technically',
+    detailedAns:
+      'Explain that you used to focus too much on technical optimization before validating impact. Show how you now balance engineering with product priorities.',
+  },
+  {
+    question: 'Tell me about a time you worked cross-functionally',
+    answer: 'Smart ring + hardware teams',
+    detailedAns:
+      'Describe working with hardware and firmware teams, aligning on data flow, and solving integration challenges.',
+  },
+  {
+    question: 'Tell me about a time you improved a process',
+    answer: 'Automation system',
+    detailedAns:
+      'Explain how you identified inefficiency in page creation and built a system to automate it, improving team productivity and speed.',
+  },
+  {
+    question: 'How do you handle ambiguity?',
+    answer: 'Break problem into parts',
+    detailedAns:
+      'Explain your approach: define constraints, talk to stakeholders, create initial architecture, iterate. Use smart ring example.',
+  },
+  {
+    question: 'How do you prioritize work?',
+    answer: 'Impact-driven prioritization',
+    detailedAns:
+      'Focus on business impact, user experience, and deadlines. Mention performance work where you prioritized high-impact optimizations.',
+  },
+  {
+    question: 'How do you handle pressure?',
+    answer: 'Focus on high-impact tasks',
+    detailedAns:
+      'Explain staying calm, breaking down tasks, and focusing on what moves metrics. Use performance deadline example.',
+  },
+  {
+    question: 'Tell me about a time you learned something quickly',
+    answer: 'AI voice prototype',
+    detailedAns:
+      'Discuss building a voice-based appointment system using Eleven Labs, learning new tools quickly and applying them to a real use case.',
+  },
+  {
+    question: 'Tell me about a time you improved quality',
+    answer: 'Testing + monitoring',
+    detailedAns:
+      'Explain introducing Jest, RTL, Cypress, and Sentry for reliability and production monitoring.',
+  },
+  {
+    question: 'Tell me about a time you drove innovation',
+    answer: 'A/B testing platform',
+    detailedAns:
+      'Show how you built a system enabling non-technical teams to run experiments, increasing velocity and innovation.',
+  },
+]
+
+const behavioralCards: BehavioralCard[] = behavioralRaw.map((item, idx) => ({
+  ...item,
+  id: idx,
+}))
+
 const flashcardsRaw = [
   {
     question: 'Smart vs Dumb Components?',
@@ -238,6 +373,7 @@ const flashcards: Flashcard[] = flashcardsRaw.map((item, idx) => ({
 function App() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const [detailsOpen, setDetailsOpen] = useState<Set<number>>(new Set())
+  const [activeTab, setActiveTab] = useState<'technical' | 'behavioral'>('technical')
 
   const toggleCard = (id: number) => {
     setOpenIndex((prev) => (prev === id ? null : id))
@@ -262,46 +398,101 @@ function App() {
   return (
     <main className="flashcards-shell">
       <h1>React / Frontend Flashcards</h1>
-      <section className="flashcards-container">
-        {Object.entries(groupedFlashcards).map(([topic, cards]) => (
-          <div key={topic} className="topic-group">
-            <h2>{topic}</h2>
-            {cards.map((card) => {
-              const cardOpen = openIndex === card.id
-              const cardDetailsOpen = detailsOpen.has(card.id)
+      <div className="tabs">
+        <button
+          className={`tab-button ${activeTab === 'technical' ? 'active' : ''}`}
+          onClick={() => setActiveTab('technical')}
+        >
+          Technical
+        </button>
+        <button
+          className={`tab-button ${activeTab === 'behavioral' ? 'active' : ''}`}
+          onClick={() => setActiveTab('behavioral')}
+        >
+          Behavioral
+        </button>
+      </div>
 
-              return (
-                <article key={card.id} className={`flashcard ${cardOpen ? 'open' : ''}`}>
-                  <button
-                    className="flashcard-question"
-                    onClick={() => toggleCard(card.id)}
-                    aria-expanded={cardOpen}
-                  >
-                    <span>{card.question}</span>
-                    <span className="arrow">{cardOpen ? '▾' : '▸'}</span>
-                  </button>
+      {activeTab === 'technical' && (
+        <section className="flashcards-container">
+          {Object.entries(groupedFlashcards).map(([topic, cards]) => (
+            <div key={topic} className="topic-group">
+              <h2>{topic}</h2>
+              {cards.map((card) => {
+                const cardOpen = openIndex === card.id
+                const cardDetailsOpen = detailsOpen.has(card.id)
 
-                  {cardOpen && (
-                    <div className="flashcard-answer-area">
-                      <p className="flashcard-answer">{card.answer}</p>
-                      <button
-                        className="details-toggle"
-                        onClick={() => toggleDetails(card.id)}
-                        aria-expanded={cardDetailsOpen}
-                      >
-                        {cardDetailsOpen ? 'Hide details' : 'Show details'}
-                      </button>
-                      {cardDetailsOpen && (
-                        <div className="flashcard-detailed">{card.detailedAns}</div>
-                      )}
-                    </div>
-                  )}
-                </article>
-              )
-            })}
-          </div>
-        ))}
-      </section>
+                return (
+                  <article key={card.id} className={`flashcard ${cardOpen ? 'open' : ''}`}>
+                    <button
+                      className="flashcard-question"
+                      onClick={() => toggleCard(card.id)}
+                      aria-expanded={cardOpen}
+                    >
+                      <span>{card.question}</span>
+                      <span className="arrow">{cardOpen ? '▾' : '▸'}</span>
+                    </button>
+
+                    {cardOpen && (
+                      <div className="flashcard-answer-area">
+                        <p className="flashcard-answer">{card.answer}</p>
+                        <button
+                          className="details-toggle"
+                          onClick={() => toggleDetails(card.id)}
+                          aria-expanded={cardDetailsOpen}
+                        >
+                          {cardDetailsOpen ? 'Hide details' : 'Show details'}
+                        </button>
+                        {cardDetailsOpen && (
+                          <div className="flashcard-detailed">{card.detailedAns}</div>
+                        )}
+                      </div>
+                    )}
+                  </article>
+                )
+              })}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {activeTab === 'behavioral' && (
+        <section className="flashcards-container">
+          {behavioralCards.map((card) => {
+            const cardOpen = openIndex === card.id
+            const cardDetailsOpen = detailsOpen.has(card.id)
+
+            return (
+              <article key={card.id} className={`flashcard ${cardOpen ? 'open' : ''}`}>
+                <button
+                  className="flashcard-question"
+                  onClick={() => toggleCard(card.id)}
+                  aria-expanded={cardOpen}
+                >
+                  <span>{card.question}</span>
+                  <span className="arrow">{cardOpen ? '▾' : '▸'}</span>
+                </button>
+
+                {cardOpen && (
+                  <div className="flashcard-answer-area">
+                    <p className="flashcard-answer">{card.answer}</p>
+                    <button
+                      className="details-toggle"
+                      onClick={() => toggleDetails(card.id)}
+                      aria-expanded={cardDetailsOpen}
+                    >
+                      {cardDetailsOpen ? 'Hide details' : 'Show details'}
+                    </button>
+                    {cardDetailsOpen && (
+                      <div className="flashcard-detailed">{card.detailedAns}</div>
+                    )}
+                  </div>
+                )}
+              </article>
+            )
+          })}
+        </section>
+      )}
     </main>
   )
 }

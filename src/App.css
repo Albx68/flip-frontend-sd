@@ -201,6 +201,34 @@
   text-shadow: none;
 }
 
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #1e293b;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  color: #cbd5e1;
+}
+
+.tab-button.active {
+  color: #dbeafe;
+  border-bottom-color: #3b82f6;
+}
+
 .flashcards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
