@@ -16,130 +16,114 @@ type BehavioralCard = {
   detailedAns: string
 }
 
-const behavioralRaw = [
- {
+const behavioralFinal = [
+  {
     question: "Tell me about yourself",
-    answer: "Frontend engineer → impact (performance, offline-first, growth) → metrics → what I'm looking for",
+    answer: "Frontend engineer → impact (performance, offline-first, growth) → metrics → depth focus",
     detailedAns:
-      "I’m a frontend-focused software engineer with around 3+ years of experience building scalable web and mobile applications, primarily in healthtech. Currently at 2070Health, I’ve led initiatives across performance, offline-first systems, and growth engineering. For example, I improved Lighthouse scores from 30–40 to 70+ and doubled LPVR, designed an offline-first architecture reducing latency from 2–4 seconds to under 500ms, and built systems like automated page creation that reduced turnaround time from 2+ days to under 2 minutes, along with an A/B testing tool for non-technical teams. I enjoy working at the intersection of performance, system design, and product impact, and I’m now looking for opportunities where I can take more ownership of frontend architecture at scale."
+      "I’m a frontend-focused software engineer with around 3+ years of experience building scalable web and mobile applications, primarily in healthtech. At 2070Health, I led initiatives across performance, offline-first systems, and growth engineering.\n\nFor example, I led a migration of landing pages from HTML to Next.js, improving Lighthouse scores from 30–40 to 70+ and increasing LPVR from 35–40 to 50–70 depending on campaigns, while reducing code from ~2000 lines per page to under 200 and saving ~8 hours of dev time per page through modularization.\n\nI also designed an offline-first architecture using Realm, reducing latency from 2–4 seconds to under 500ms, and built a GPU-accelerated charting library using React Native Skia for high-performance data visualization.\n\nI enjoy working at the intersection of performance, system design, and product impact, and I’m now looking to go deeper into building and scaling frontend systems."
   },
- {
-  question: 'Tell me about a time you took ownership',
-  answer: 'Strapi automation → extended with AI (Gemini) → 2 days → 2 hours → 2 minutes',
-  detailedAns:
-    'At 2070Health, creating new landing pages initially took over 2 days and required developer involvement, which slowed down marketing significantly. I took ownership of solving this by first designing an automated page creation system using Strapi CMS, which reduced the time from 2+ days to under 2 hours.\n\nHowever, I noticed that content managers were already preparing structured content in Word documents. I went a step further and built a system using Gemini that could parse these documents and directly convert them into reusable frontend components.\n\nWith this improvement, we reduced the page creation time further to under 2 minutes, completely removing developer dependency and enabling non-technical teams to launch pages instantly.\n\nThis significantly improved go-to-market speed and experimentation velocity for the growth team.\n\nThe key takeaway for me was identifying high-leverage opportunities and going beyond the initial solution to create a 10x impact.'
-},
-{
-  question: 'Tell me about your biggest impact',
-  answer: 'Strapi + Gemini automation → 2 days → 2 hours → <2 minutes, enabled non-tech teams',
-  detailedAns:
-    'At 2070Health, creating landing pages for campaigns initially took over 2 days and required developer involvement, which slowed down experimentation and go-to-market speed.\n\nI took ownership of solving this by first building an automated page creation system using Strapi CMS, which reduced the time from 2+ days to under 2 hours.\n\nHowever, I noticed that content managers were already preparing structured content in Word documents. I went a step further and built a system using Gemini that could parse these documents and convert them directly into reusable frontend components.\n\nWith this improvement, we reduced page creation time further to under 2 minutes and completely removed developer dependency, enabling non-technical teams to launch pages instantly.\n\nThis significantly increased experimentation velocity and improved growth efficiency across the organization.\n\nThe key takeaway for me was identifying high-leverage problems and pushing solutions beyond incremental improvements to achieve order-of-magnitude impact.'
-},
-{
-  question: 'Tell me about a time you handled ambiguity',
-  answer: 'Smart ring + third-party firmware → unclear requirements → defined system + offline-first (Realm)',
-  detailedAns:
-    'While building the smart ring module at 2070Health, we faced significant ambiguity because the hardware and firmware were developed by a third-party vendor in China. Communication was challenging, documentation was limited, and we only had a basic reference app that didn’t cover the level of complexity we needed.\n\nTo move forward, I took ownership of defining the system end-to-end. I effectively had to act as product manager, developer, and designer—figuring out user flows, defining data structures, and designing how the frontend would interact with the device.\n\nI collaborated closely with the firmware team despite communication barriers, breaking down requirements into smaller, testable interactions and validating assumptions incrementally.\n\nAt the same time, I designed an offline-first architecture using Realm, since relying on APIs would introduce latency and unreliability. This allowed us to store and process data locally, reducing read/write latency from 2–4 seconds to under 500 milliseconds.\n\nAs a result, we were able to deliver a reliable and high-performance system despite unclear requirements and external dependencies.\n\nThe key takeaway for me was learning how to bring structure to ambiguity—by breaking down the problem, validating assumptions early, and taking ownership beyond just engineering responsibilities.'
-},
-{
-  question: 'Tell me about leadership experience',
-  answer: 'Led team of 5 → enabled RN adoption → architecture + mentorship + delivery',
-  detailedAns:
-    'At 2070Health, I led a team of five engineers to build the smart ring module for our cross-platform app.\n\nOne of the key challenges was that most of the team was new to React Native, which could have slowed down development significantly.\n\nTo address this, I took an active role in mentoring the team—conducting knowledge-sharing sessions, helping them understand React Native fundamentals, and setting up best practices around component structure, state management, and performance.\n\nIn parallel, I defined the frontend architecture and broke down the system into clear, manageable tasks so the team could move confidently despite the initial learning curve.\n\nI also coordinated closely with hardware and firmware teams to ensure alignment on data flow and integration.\n\nAs a result, the team was able to ramp up quickly and successfully deliver a complex module while maintaining performance and reliability.\n\nOne key lesson for me was that leadership is not just about driving execution, but about enabling the team to succeed by reducing ambiguity and accelerating their growth.'
-},
- {
-  question: 'Tell me about a failure',
-  answer: 'Underestimated smart ring integration complexity → fixed with structured approach',
-  detailedAns:
-    'Early on, I underestimated the complexity of integrating with the hardware vendor and relied too much on their reference app, which led to some delays. I corrected this by breaking the system into smaller components, defining the architecture more proactively, and improving communication with the firmware team. This helped stabilize development and deliver a high-performance offline-first system.'
-},
-{
-  question: 'Tell me about a disagreement',
-  answer: 'Unstandardized frontend vs unified Next.js + TS stack → improved DX and team alignment',
-  detailedAns:
-    'When I joined Bonatra, each engineer was using different approaches and tools to build features, which led to inconsistencies and slowed down development.\n\nI proposed standardizing the frontend stack by introducing Next.js, TypeScript for type safety, linting rules, and consistent patterns for data fetching and state management using React Query and Zustand.\n\nThere was some disagreement initially, especially around whether we should invest time in restructuring parts of the codebase and moving away from existing approaches like Jinja templates.\n\nInstead of pushing for an immediate rewrite, I demonstrated the benefits through incremental improvements and showed how the new stack improved developer experience, maintainability, and reduced bugs.\n\nOver time, the team aligned with the approach, and we ended up with a much more consistent and scalable codebase. The overall developer experience improved significantly, and the team was happy with the end result.\n\nThe key takeaway for me was that driving alignment requires balancing technical vision with gradual adoption and clearly demonstrating value.'
-},
-{
-  question: 'Tell me about a tight deadline',
-  answer: 'Improved Lighthouse 30–40 → 70–85 under live campaign with team execution',
-  detailedAns:
-    'We had a live marketing campaign running, and several key landing pages had poor Lighthouse scores around 30–40, which was impacting user experience and conversions. I was tasked with improving performance within a very short timeframe.\n\nI quickly audited the pages and created a prioritized plan focusing on high-impact fixes like code splitting, reducing render-blocking resources, optimizing images, and deferring non-critical scripts.\n\nI also aligned the team on this plan and ensured each engineer took ownership of specific pages so we could parallelize execution.\n\nWithin a couple of days, we improved Lighthouse scores to around 70–85 across key pages. We couldn’t push beyond 85 due to non-negotiable third-party marketing tags managed via GTM, but we optimized everything within our control.\n\nThis experience taught me how to balance speed vs perfection under pressure, focus on high-leverage improvements, and coordinate team execution effectively during time-sensitive situations.'
-},
+
+  {
+    question: 'Tell me about a time you took ownership',
+    answer: 'Automation + AI → 2 days → 2 hours → <2 minutes, unlocked org velocity',
+    detailedAns:
+      'Landing page creation took 2+ days and required developer involvement. I built a Strapi-based automation system reducing it to under 2 hours.\n\nThen I identified a higher-leverage opportunity—content already existed in structured Word docs. I built a system using Gemini to convert these directly into components, reducing creation time to under 2 minutes.\n\nThis removed developer dependency, significantly increased experimentation velocity, and improved go-to-market speed.\n\nKey takeaway: focus on 10x improvements, not incremental gains.'
+  },
+
+  {
+    question: 'Tell me about your biggest impact',
+    answer: 'Next.js migration + performance → LPVR growth + dev efficiency',
+    detailedAns:
+      'I led the migration of landing pages from HTML to Next.js to address poor performance.\n\nWe improved Lighthouse scores from 30–40 to 70+ and increased LPVR from 35–40 to 50–70 depending on campaigns.\n\nWe also reduced code size from ~2000 lines per page to under 200, modularized components, and saved ~8 hours of development time per page.\n\nThis had both user experience and business impact, improving conversions while increasing developer velocity.'
+  },
+
+  {
+    question: 'Tell me about a time you handled ambiguity',
+    answer: 'Smart ring + vendor constraints → defined system + offline-first architecture',
+    detailedAns:
+      'The smart ring integration involved a third-party firmware team with limited documentation and communication challenges.\n\nI took ownership of defining the system end-to-end, acting across product, engineering, and design to establish data flows and interactions.\n\nI designed an offline-first architecture using Realm, eliminating API dependency and reducing latency from 2–4 seconds to under 500ms.\n\nThis enabled a reliable, high-performance system despite ambiguity.\n\nKey takeaway: create structure and validate assumptions early.'
+  },
+
+  {
+    question: 'Tell me about leadership experience',
+    answer: 'Led team of 5 → enabled RN adoption → architecture + mentorship',
+    detailedAns:
+      'I led a team of 5 engineers building the smart ring module. Most were new to React Native.\n\nI mentored the team, conducted knowledge-sharing sessions, and established best practices for state management and performance.\n\nI also defined architecture and broke down tasks to reduce ambiguity.\n\nAs a result, the team ramped up quickly and delivered a complex system successfully.\n\nAdditionally, I mentored juniors through code reviews and guidance, improving overall team efficiency.'
+  },
+
+  {
+    question: 'Tell me about a failure',
+    answer: 'Underestimated integration complexity → fixed with structured approach',
+    detailedAns:
+      'I initially underestimated the complexity of integrating with a third-party hardware vendor and relied too much on their reference app, leading to delays.\n\nI corrected this by breaking the system into smaller components, defining architecture proactively, and improving communication loops.\n\nThis stabilized development and enabled successful delivery.\n\nKey lesson: proactively structure ambiguous problems early.'
+  },
+
+  {
+    question: 'Tell me about a disagreement',
+    answer: 'Standardization vs individual approaches → incremental adoption',
+    detailedAns:
+      'At Bonatra, engineers used different stacks, leading to inconsistency.\n\nI proposed standardizing on Next.js, TypeScript, React Query, and Zustand.\n\nThere was resistance around refactoring, so I introduced changes incrementally and demonstrated benefits.\n\nThis improved consistency, reduced bugs, and improved developer experience.\n\nKey takeaway: influence through value, not force.'
+  },
+
+  {
+    question: 'Tell me about a tight deadline',
+    answer: 'Live campaign → improved Lighthouse 30–40 → 70–85 in days',
+    detailedAns:
+      'During a live campaign, landing pages had poor performance (30–40 Lighthouse).\n\nI created a prioritized plan focusing on high-impact fixes and aligned the team to execute in parallel.\n\nWe improved scores to 70–85 within days.\n\nWe couldn’t exceed 85 due to GTM constraints, but optimized everything within control.\n\nKey takeaway: optimize for impact under constraints.'
+  },
+
   {
     question: 'Tell me about stakeholder management',
-    answer: 'Product vs engineering alignment',
+    answer: 'Balanced engineering vs business constraints',
     detailedAns:
-      'Explain how you aligned product and engineering teams, communicated tradeoffs, and ensured both speed and stability through system design (e.g., experimentation tool).',
+      'While improving performance, marketing required GTM scripts that impacted performance.\n\nInstead of removing them, I worked with stakeholders to defer non-critical scripts and optimize loading.\n\nThis improved performance while preserving business requirements.\n\nKey takeaway: align on goals, not solutions.'
   },
+
   {
-  question: 'Tell me about a technical tradeoff',
-  answer: 'Full rewrite vs incremental migration → chose gradual standardization',
-  detailedAns:
-    'When I joined Bonatra, the frontend codebase was inconsistent, with different engineers using different approaches and tools. I wanted to standardize the stack using Next.js, TypeScript, React Query, and Zustand.\n\nOne key decision was whether to do a full rewrite of the codebase or migrate incrementally.\n\nA full rewrite would have given us a clean architecture quickly, but it would have delayed feature delivery and introduced significant risk. On the other hand, an incremental approach would be slower but safer and allow us to continue shipping features.\n\nI chose to migrate incrementally by introducing the new stack in new features and gradually refactoring existing parts of the codebase.\n\nThis allowed us to improve developer experience and maintainability without disrupting ongoing development, and over time the entire codebase aligned with the new standards.\n\nThe key takeaway for me was that technical decisions should balance ideal architecture with business constraints like time-to-market and team velocity.'
-},
+    question: 'Tell me about a technical tradeoff',
+    answer: 'Rewrite vs incremental → chose safe, scalable migration',
+    detailedAns:
+      'I had to decide between rewriting the frontend or incrementally migrating to a better stack.\n\nA full rewrite was cleaner but risky. I chose incremental migration to maintain velocity.\n\nThis allowed continuous delivery while improving architecture.\n\nKey takeaway: balance ideal architecture with business constraints.'
+  },
+
   {
     question: 'What are your strengths?',
-    answer: 'Performance + product thinking',
+    answer: 'Performance + system design + product thinking + data visualization',
     detailedAns:
-      'Highlight your ability to combine frontend performance, system design, and product impact. Mention real examples like improving LPVR and building growth systems.',
+      'I combine performance, system design, and product thinking to drive impact.\n\nI’ve improved Lighthouse and LPVR significantly and built offline-first systems.\n\nI also built a custom React Native charting library using Skia because no existing solutions supported gradient-based, GPU-accelerated charts, enabling 60fps visualizations.\n\nI focus on building systems that are both technically strong and product-driven.'
   },
+
   {
     question: 'What is your weakness?',
-    answer: 'Over-optimizing technically',
+    answer: 'Over-optimizing technically → now prioritize impact',
     detailedAns:
-      'Explain that you used to focus too much on technical optimization before validating impact. Show how you now balance engineering with product priorities.',
+      'Earlier, I focused too much on technical optimization before validating business impact.\n\nNow, I prioritize high-impact improvements and align with product goals before optimizing deeply.'
   },
-  {
-    question: 'Tell me about a time you worked cross-functionally',
-    answer: 'Smart ring + hardware teams',
-    detailedAns:
-      'Describe working with hardware and firmware teams, aligning on data flow, and solving integration challenges.',
-  },
+
   {
     question: 'Tell me about a time you improved a process',
-    answer: 'Automation system',
+    answer: 'Automation system → 2 days → 2 minutes',
     detailedAns:
-      'Explain how you identified inefficiency in page creation and built a system to automate it, improving team productivity and speed.',
+      'I identified inefficiencies in page creation and built an automated system using Strapi and AI, reducing time from 2 days to under 2 minutes and unlocking team productivity.'
   },
-  {
-    question: 'How do you handle ambiguity?',
-    answer: 'Break problem into parts',
-    detailedAns:
-      'Explain your approach: define constraints, talk to stakeholders, create initial architecture, iterate. Use smart ring example.',
-  },
-  {
-    question: 'How do you prioritize work?',
-    answer: 'Impact-driven prioritization',
-    detailedAns:
-      'Focus on business impact, user experience, and deadlines. Mention performance work where you prioritized high-impact optimizations.',
-  },
-  {
-    question: 'How do you handle pressure?',
-    answer: 'Focus on high-impact tasks',
-    detailedAns:
-      'Explain staying calm, breaking down tasks, and focusing on what moves metrics. Use performance deadline example.',
-  },
-  {
-    question: 'Tell me about a time you learned something quickly',
-    answer: 'AI voice prototype',
-    detailedAns:
-      'Discuss building a voice-based appointment system using Eleven Labs, learning new tools quickly and applying them to a real use case.',
-  },
+
   {
     question: 'Tell me about a time you improved quality',
-    answer: 'Testing + monitoring',
+    answer: 'Reduced debugging + improved stability',
     detailedAns:
-      'Explain introducing Jest, RTL, Cypress, and Sentry for reliability and production monitoring.',
+      'I resolved workflow conflicts and improved system stability, reducing debugging effort by ~30 hours per week and eliminating recurring bugs.\n\nThis significantly improved system reliability.'
   },
+
   {
     question: 'Tell me about a time you drove innovation',
-    answer: 'A/B testing platform',
+    answer: 'Custom charting + experimentation tools',
     detailedAns:
-      'Show how you built a system enabling non-technical teams to run experiments, increasing velocity and innovation.',
-  },
-]
+      'I built a custom charting library for React Native and an A/B experimentation platform, enabling new product capabilities and faster experimentation.\n\nThese solutions addressed gaps not available in existing tools.'
+  }
+];
 
-const behavioralCards: BehavioralCard[] = behavioralRaw.map((item, idx) => ({
+const behavioralCards: BehavioralCard[] = behavioralFinal.map((item, idx) => ({
   ...item,
   id: idx,
 }))
