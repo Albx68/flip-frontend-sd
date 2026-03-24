@@ -159,12 +159,19 @@ const whyLeaveRaw = [
     detailedAns:
       'I\'m looking for a role where I can work on large-scale frontend systems, contribute to architecture decisions, and solve performance and user experience challenges. I\'m particularly interested in roles where engineering decisions directly impact product outcomes.'
   },
+{
+  question: 'Why are you interested in this company?',
+  answer: 'Fintech scale + real-world impact + alignment with my system design interests',
+  detailedAns:
+    'What I find interesting about Digio is the kind of problems you’re solving—things like digital transactions, KYC, and document workflows that are actually used in real-world, high-stakes scenarios.\n\nIn fintech, even small issues in performance or user experience can affect trust, and that makes the problem space much more meaningful to me.\n\nFrom my side, I’ve worked a lot on performance optimization and building reliable frontend systems, so this feels like a natural next step where I can apply that experience at a larger scale.\n\nI’m also at a stage where I want to go deeper into system design and work on systems that need to be both scalable and highly reliable, and Digio seems like a great fit for that.'
+},
+
   {
-    question: 'Why are you interested in this company?',
-    answer: 'Alignment with scale and problem space',
-    detailedAns:
-      'I\'m interested in this company because of the scale and complexity of the problems you\'re solving. It aligns well with my experience in performance optimization and building scalable frontend systems, and I\'m excited to contribute to impactful products at a larger scale.'
-  },
+  question: 'Why didn’t you wait for a new opportunity before leaving your previous job?',
+  answer: 'Intentional break to upskill, build, and be deliberate about next role',
+  detailedAns:
+    'That was an intentional decision. After my time at 2070Health, I wanted to take a short step back to reflect on the kind of problems I wanted to work on next—especially transitioning from 0→1 work to roles focused on scale and deeper system design.\n\nI used that time productively by updating my portfolio and building a couple of applications, including a DSA practice tool and an app for people with ADHD to improve focus and productivity.\n\nAlongside that, I focused on strengthening my system design and frontend architecture skills.\n\nSo rather than immediately jumping into the next role, I chose to be deliberate about the transition and prepare for opportunities that align better with my long-term goals.'
+},
   {
     question: 'What didn\'t you like about your previous role?',
     answer: 'Looking for more complex, system-level challenges',
