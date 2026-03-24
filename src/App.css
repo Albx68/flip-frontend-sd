@@ -230,12 +230,18 @@
 }
 
 .flashcards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 14px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0;
+}
+
+@media (min-width: 900px) {
+  .flashcards-container {
+    margin: 0 auto;
+  }
 }
 
 .topic-filter {
