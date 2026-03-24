@@ -144,6 +144,74 @@ const behavioralCards: BehavioralCard[] = behavioralRaw.map((item, idx) => ({
   id: idx,
 }))
 
+const whyLeaveRaw = [
+  {
+    question: 'Why did you leave your previous job?',
+    answer: '0→1 experience → now looking for depth + scale',
+    detailedAns:
+      'I had a great experience at 2070Health, where the nature of the work was largely focused on building products from 0 to 1. It gave me strong exposure across areas like performance optimization, offline-first systems, and growth engineering, helping me build solid breadth across the frontend.\n\nOver time, I felt that I wanted to complement that breadth with more depth—especially by working on larger-scale systems and more complex frontend architecture challenges.\n\nSo I\'m now looking for opportunities where I can go deeper into system design, performance, and scalability, and take more ownership over architectural decisions.\n\nThis move is really about evolving from breadth-focused work to more depth and scale.'
+  },
+  {
+    question: 'What were you doing during your career gap?',
+    answer: 'Upskilling + building products (portfolio, DSA tool, ADHD app)',
+    detailedAns:
+      'After my time at 2070Health, I took a short break to focus on upskilling and building a few products. I updated my portfolio website and built a couple of applications—one focused on DSA practice, and another designed for people with ADHD to improve focus and productivity.\n\nAlongside this, I strengthened my system design and frontend architecture skills and explored areas like performance optimization and AI-driven workflows.\n\nOverall, I used this period productively to build, learn, and prepare for roles where I can take on larger-scale challenges and more ownership.\n\nNow, I\'m actively looking for the right opportunity where I can apply these learnings and contribute effectively.'
+  },
+  {
+    question: 'What kind of growth are you looking for?',
+    answer: 'Scale + architecture + ownership',
+    detailedAns:
+      'I\'m looking to work on larger-scale systems where I can contribute to frontend architecture decisions and solve complex performance and system design problems. I also enjoy working close to product and driving measurable impact through engineering.'
+  },
+  {
+    question: 'Why not continue growing at 2070Health?',
+    answer: 'Reached strong impact, now seeking larger challenges',
+    detailedAns:
+      'I had a great experience and delivered strong impact across performance, offline-first systems, and growth tooling. At this point, I felt I had achieved a good level of impact in my current scope and wanted to take on new challenges at a larger scale with more ownership in system-level decisions.'
+  },
+  {
+    question: 'What are you looking for in your next role?',
+    answer: 'Large-scale systems + product impact',
+    detailedAns:
+      'I\'m looking for a role where I can work on large-scale frontend systems, contribute to architecture decisions, and solve performance and user experience challenges. I\'m particularly interested in roles where engineering decisions directly impact product outcomes.'
+  },
+  {
+    question: 'Why are you interested in this company?',
+    answer: 'Alignment with scale and problem space',
+    detailedAns:
+      'I\'m interested in this company because of the scale and complexity of the problems you\'re solving. It aligns well with my experience in performance optimization and building scalable frontend systems, and I\'m excited to contribute to impactful products at a larger scale.'
+  },
+  {
+    question: 'What didn\'t you like about your previous role?',
+    answer: 'Looking for more complex, system-level challenges',
+    detailedAns:
+      'There wasn\'t anything I particularly disliked, but over time I felt the challenges became more incremental. I\'m someone who enjoys solving complex system-level problems, so I\'m looking for an environment where I can take on larger architectural challenges.'
+  },
+  {
+    question: 'Are you leaving due to team or management issues?',
+    answer: 'No, purely growth-driven',
+    detailedAns:
+      'No, I had a great experience working with my team and leadership. The decision is primarily driven by my desire to grow further and take on larger-scale challenges.'
+  },
+  {
+    question: 'What would have made you stay?',
+    answer: 'More opportunities for scale and architectural ownership',
+    detailedAns:
+      'I was already doing impactful work, but I\'m now looking for opportunities where I can work on larger-scale systems and have more ownership over architecture decisions. That\'s the main reason I\'m exploring new roles.'
+  },
+  {
+    question: 'How does this role align with your goals?',
+    answer: 'Direct alignment with scale and architectural growth',
+    detailedAns:
+      'This role aligns well with my goals because it involves working on larger-scale systems and contributing to frontend architecture, which is exactly the direction I want to grow in.'
+  }
+]
+
+const whyLeaveCards: BehavioralCard[] = whyLeaveRaw.map((item, idx) => ({
+  ...item,
+  id: idx + 100, // offset to avoid id conflicts
+}))
+
 const flashcardsRaw = [
   {
     question: 'Smart vs Dumb Components?',
@@ -373,7 +441,7 @@ const flashcards: Flashcard[] = flashcardsRaw.map((item, idx) => ({
 function App() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const [detailsOpen, setDetailsOpen] = useState<Set<number>>(new Set())
-  const [activeTab, setActiveTab] = useState<'technical' | 'behavioral'>('technical')
+  const [activeTab, setActiveTab] = useState<'technical' | 'behavioral' | 'career'>('technical')
 
   const toggleCard = (id: number) => {
     setOpenIndex((prev) => (prev === id ? null : id))
@@ -410,6 +478,12 @@ function App() {
           onClick={() => setActiveTab('behavioral')}
         >
           Behavioral
+        </button>
+        <button
+          className={`tab-button ${activeTab === 'career' ? 'active' : ''}`}
+          onClick={() => setActiveTab('career')}
+        >
+          Career Transition
         </button>
       </div>
 
@@ -459,6 +533,44 @@ function App() {
       {activeTab === 'behavioral' && (
         <section className="flashcards-container">
           {behavioralCards.map((card) => {
+            const cardOpen = openIndex === card.id
+            const cardDetailsOpen = detailsOpen.has(card.id)
+
+            return (
+              <article key={card.id} className={`flashcard ${cardOpen ? 'open' : ''}`}>
+                <button
+                  className="flashcard-question"
+                  onClick={() => toggleCard(card.id)}
+                  aria-expanded={cardOpen}
+                >
+                  <span>{card.question}</span>
+                  <span className="arrow">{cardOpen ? '▾' : '▸'}</span>
+                </button>
+
+                {cardOpen && (
+                  <div className="flashcard-answer-area">
+                    <p className="flashcard-answer">{card.answer}</p>
+                    <button
+                      className="details-toggle"
+                      onClick={() => toggleDetails(card.id)}
+                      aria-expanded={cardDetailsOpen}
+                    >
+                      {cardDetailsOpen ? 'Hide details' : 'Show details'}
+                    </button>
+                    {cardDetailsOpen && (
+                      <div className="flashcard-detailed">{card.detailedAns}</div>
+                    )}
+                  </div>
+                )}
+              </article>
+            )
+          })}
+        </section>
+      )}
+
+      {activeTab === 'career' && (
+        <section className="flashcards-container">
+          {whyLeaveCards.map((card) => {
             const cardOpen = openIndex === card.id
             const cardDetailsOpen = detailsOpen.has(card.id)
 
