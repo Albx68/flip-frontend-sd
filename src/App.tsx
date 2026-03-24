@@ -203,261 +203,166 @@ const whyLeaveCards: BehavioralCard[] = whyLeaveRaw.map((item, idx) => ({
   id: idx + 100, // offset to avoid id conflicts
 }))
 
-const flashcardsRaw= [
+const flashcardsRaw = [
   {
     question: 'Smart vs Dumb Components?',
-    answer: 'Smart = logic/state, Dumb = UI',
+    answer: 'Separation of concerns: logic vs presentation',
     detailedAns:
-      'Smart components handle state, API calls, and business logic. Dumb components render UI based on props. Modern React replaces this with hooks and better composition.'
+      'Smart (container) components are responsible for handling business logic, state management, and API interactions. Dumb (presentational) components focus purely on rendering UI based on props and are reusable and easier to test.\n\nHistorically, this pattern helped maintain separation of concerns. However, with modern React (hooks), this distinction is less rigid. Logic can now be extracted into custom hooks, allowing components to remain lean and focused.\n\nBest practice today: prefer hooks-based abstraction over strict smart/dumb separation.'
   },
+
   {
     question: 'State colocation vs global state?',
-    answer: 'Keep state local unless shared widely',
+    answer: 'Keep state as close as possible to where it’s used',
     detailedAns:
-      'Colocate state near usage for simplicity and performance. Use global state only when needed across distant components.'
+      'State colocation means placing state in the nearest common ancestor where it’s needed. This reduces unnecessary re-renders and improves maintainability.\n\nGlobal state should only be used when:\n- Multiple distant components need access\n- State is cross-cutting (auth, theme, user)\n\nOverusing global state leads to tight coupling, harder debugging, and performance issues.\n\nRule: start local → lift only when necessary.'
   },
+
   {
     question: 'Local vs Context vs Redux?',
-    answer: 'Local → Context → Redux (increasing complexity)',
+    answer: 'Choose based on scope and complexity',
     detailedAns:
-      'Local for component state, Context for shared simple state, Redux for complex global interactions requiring predictability.'
+      'Local state (useState/useReducer): Best for isolated component logic.\n\nContext API: Useful for avoiding prop drilling when sharing simple state across a subtree. However, updates trigger re-renders of all consumers.\n\nRedux (or Zustand, etc.): Best for complex, global state with frequent updates, requiring predictability, middleware, or debugging tools.\n\nKey tradeoff: simplicity vs scalability.'
   },
+
   {
     question: 'Code splitting?',
-    answer: 'Load smaller bundles on demand',
+    answer: 'Reduce initial bundle size by splitting code',
     detailedAns:
-      'Split bundles using dynamic imports to reduce initial load time. Common in route-based or component-based splitting.'
+      'Code splitting divides the application bundle into smaller chunks loaded on demand.\n\nTypes:\n- Route-based splitting (most common)\n- Component-based splitting (React.lazy)\n\nBenefits:\n- Faster initial load (better LCP)\n- Reduced JS parsing/execution\n\nTradeoff: More network requests (needs caching/CDN).\n\nIn production, it significantly improves performance metrics like LCP and INP.'
   },
+
   {
     question: 'Lazy loading?',
-    answer: 'Load resources only when needed',
+    answer: 'Defer loading until needed',
     detailedAns:
-      'Defer loading of images/components until needed (viewport or interaction), improving performance.'
+      'Lazy loading delays loading of resources until they are required.\n\nExamples:\n- Images (loading="lazy")\n- Components (React.lazy)\n- Routes\n\nBenefits:\n- Reduces initial bundle size\n- Improves performance metrics (especially LCP)\n\nTradeoff: Slight delay when loading deferred content.'
   },
+
   {
     question: 'Debounce vs Throttle?',
-    answer: 'Debounce = after pause, Throttle = at intervals',
+    answer: 'Control function execution frequency',
     detailedAns:
-      'Debounce waits for user to stop input, throttle limits execution frequency.'
+      'Debounce: Executes function only after a pause in events (e.g., search input).\n\nThrottle: Executes function at fixed intervals (e.g., scroll tracking).\n\nUse debounce for user input, throttle for continuous events.\n\nBoth improve performance by reducing unnecessary computations and API calls.'
   },
+
   {
     question: 'Virtualization?',
-    answer: 'Render only visible items',
+    answer: 'Render only visible items in large lists',
     detailedAns:
-      'Render only visible DOM nodes in large lists to improve performance.'
+      'Virtualization (windowing) renders only the visible portion of a dataset.\n\nUsed in:\n- Feeds\n- Chat apps\n- Tables with large data\n\nBenefits:\n- Reduces DOM nodes\n- Improves memory usage and performance\n\nLibraries: react-window, react-virtualized.'
   },
+
   {
     question: 'Avoid unnecessary re-renders?',
-    answer: 'Memoization + state colocation',
+    answer: 'Optimize rendering using memoization and structure',
     detailedAns:
-      'Use React.memo, useMemo, useCallback, and proper component splitting.'
+      'Techniques:\n- React.memo for component memoization\n- useMemo/useCallback for stable references\n- State colocation to limit render scope\n- Avoid inline object/function creation\n\nAlso, split components to isolate updates.\n\nGoal: minimize work on the main thread → improves INP.'
   },
+
   {
     question: 'REST vs GraphQL?',
-    answer: 'REST = fixed, GraphQL = flexible',
+    answer: 'Fixed endpoints vs flexible queries',
     detailedAns:
-      'REST uses multiple endpoints, GraphQL fetches exact data needed.'
+      'REST:\n- Multiple endpoints\n- Over-fetching or under-fetching possible\n\nGraphQL:\n- Single endpoint\n- Client requests exact data\n\nTradeoffs:\n- GraphQL reduces network overhead but adds backend complexity\n- REST is simpler but less flexible'
   },
+
   {
     question: 'N+1 queries?',
-    answer: '1 query + N extra queries',
+    answer: 'Inefficient querying pattern',
     detailedAns:
-      'Occurs when fetching related data per item. Fix using batching or joins.'
+      'Occurs when fetching a list (1 query) and then making N additional queries for related data.\n\nExample: fetching users, then fetching posts per user.\n\nFix:\n- Batching (DataLoader)\n- Joins\n- GraphQL resolvers optimization\n\nThis is a major backend performance issue.'
   },
+
   {
     question: 'SWR vs React Query?',
-    answer: 'SWR = simple, React Query = powerful',
+    answer: 'Client-side caching libraries',
     detailedAns:
-      'React Query provides caching, retries, mutations, and devtools.'
+      'SWR:\n- Lightweight\n- Follows stale-while-revalidate pattern\n\nReact Query:\n- Full-featured\n- Caching, retries, pagination, mutations, devtools\n\nUse React Query for complex apps with heavy data interactions.'
   },
+
   {
     question: 'Pagination vs Infinite scroll?',
-    answer: 'Pagination = structured, Infinite = engagement',
+    answer: 'Structured vs seamless loading',
     detailedAns:
-      'Pagination is SEO-friendly, infinite scroll needs virtualization.'
+      'Pagination:\n- SEO-friendly\n- Easy navigation\n\nInfinite scroll:\n- Better engagement\n- Requires virtualization and performance optimization\n\nTradeoff: UX vs control'
   },
-  {
-    question: 'Loading/Error/Empty states?',
-    answer: 'Handle all 3',
-    detailedAns:
-      'Use skeletons, retries, and helpful empty states.'
-  },
+
   {
     question: 'IndexedDB vs LocalStorage?',
-    answer: 'IndexedDB = large async, LocalStorage = small sync',
+    answer: 'Database vs key-value store',
     detailedAns:
-      'IndexedDB supports structured large data and is ideal for offline-first apps.'
+      'LocalStorage:\n- Synchronous\n- Small (~5MB)\n\nIndexedDB:\n- Asynchronous\n- Large, structured storage\n- Ideal for offline-first apps\n\nIndexedDB is used in advanced apps like PWAs.'
   },
+
   {
     question: 'Service Workers?',
-    answer: 'Enable caching + offline',
+    answer: 'Enable offline-first and caching',
     detailedAns:
-      'Intercept network requests and enable offline capabilities.'
+      'Service workers run in the background and intercept network requests.\n\nCapabilities:\n- Caching strategies (cache-first, network-first)\n- Offline support\n- Push notifications\n- Background sync\n\nUsed in PWAs.'
   },
-  {
-    question: 'Background Sync?',
-    answer: 'Retry when back online',
-    detailedAns:
-      'Queue failed requests and retry later.'
-  },
-  {
-    question: 'Conflict resolution?',
-    answer: 'Handle offline conflicts',
-    detailedAns:
-      'Use last-write-wins, merging, or CRDTs.'
-  },
+
   {
     question: 'JWT vs Session?',
-    answer: 'JWT = stateless, Session = stateful',
+    answer: 'Stateless vs stateful auth',
     detailedAns:
-      'JWT scales better, sessions are easier to revoke.'
+      'JWT:\n- Stored client-side\n- Scalable\n\nSession:\n- Stored server-side\n- Easier to revoke\n\nJWT requires additional security handling (XSS protection).'
   },
-  {
-    question: 'Refresh token flow?',
-    answer: 'Short access + long refresh token',
-    detailedAns:
-      'Improves UX while maintaining security.'
-  },
-  {
-    question: 'Cookies vs LocalStorage?',
-    answer: 'Cookies (HTTP-only) are safer',
-    detailedAns:
-      'LocalStorage is vulnerable to XSS.'
-  },
-  {
-    question: 'XSS vs CSRF?',
-    answer: 'XSS = script injection, CSRF = fake requests',
-    detailedAns:
-      'Prevent using CSP, sanitization, SameSite cookies.'
-  },
+
   {
     question: 'CSR vs SSR vs SSG vs ISR?',
     answer: 'Different rendering strategies',
     detailedAns:
-      'SSR for SEO, SSG for static, ISR for hybrid.'
-  },
-  {
-    question: 'Hydration?',
-    answer: 'Attach JS to HTML',
-    detailedAns:
-      'Makes SSR pages interactive.'
-  },
-  {
-    question: 'Webpack vs Vite?',
-    answer: 'Vite is faster in dev',
-    detailedAns:
-      'Uses native ES modules.'
-  },
-  {
-    question: 'Tree shaking?',
-    answer: 'Remove unused code',
-    detailedAns:
-      'Reduces bundle size.'
-  },
-  {
-    question: 'Asset optimization?',
-    answer: 'Optimize images, JS, CSS',
-    detailedAns:
-      'Use WebP, compression, CDN.'
-  },
-  {
-    question: 'WebSockets vs Polling?',
-    answer: 'WebSockets = real-time',
-    detailedAns:
-      'Polling is inefficient.'
-  },
-  {
-    question: 'Event-driven UI?',
-    answer: 'UI reacts to events',
-    detailedAns:
-      'Used in real-time systems.'
-  },
-  {
-    question: 'Handling reconnections?',
-    answer: 'Retry + backoff',
-    detailedAns:
-      'Use exponential backoff and state sync.'
-  },
-  {
-    question: 'Unit vs Integration vs E2E?',
-    answer: 'Different testing levels',
-    detailedAns:
-      'Unit = small, Integration = combined, E2E = full flow.'
-  },
-  {
-    question: 'Jest vs RTL vs Cypress?',
-    answer: 'Jest = runner, RTL = UI, Cypress = E2E',
-    detailedAns:
-      'Each serves different testing layers.'
-  },
-  {
-    question: 'Hooks abstraction?',
-    answer: 'Reusable logic via hooks',
-    detailedAns:
-      'Replaces container components.'
-  },
-  {
-    question: 'Microfrontends?',
-    answer: 'Split frontend apps',
-    detailedAns:
-      'Independent deployment per team.'
-  },
-  {
-    question: 'Module Federation?',
-    answer: 'Load remote code',
-    detailedAns:
-      'Dynamic runtime integration.'
+      'CSR: rendered in browser (slow initial load)\nSSR: server-rendered per request\nSSG: build-time rendering\nISR: static + incremental updates\n\nTradeoff: performance vs freshness'
   },
 
-  // PERFORMANCE SECTION 🔥
+  {
+    question: 'Hydration?',
+    answer: 'Make server-rendered HTML interactive',
+    detailedAns:
+      'Hydration attaches event listeners to server-rendered HTML.\n\nIssue: hydration mismatch can cause bugs.\n\nImportant in SSR frameworks like Next.js.'
+  },
+
+  {
+    question: 'WebSockets vs Polling?',
+    answer: 'Persistent vs repeated requests',
+    detailedAns:
+      'Polling:\n- Repeated HTTP requests\n- Inefficient\n\nWebSockets:\n- Persistent connection\n- Real-time communication\n\nUsed in chat, trading apps.'
+  },
+
+  {
+    question: 'Microfrontends?',
+    answer: 'Split frontend into independent apps',
+    detailedAns:
+      'Each team owns a part of the frontend.\n\nBenefits:\n- Independent deployment\n- Team autonomy\n\nTradeoffs:\n- Increased complexity\n- Shared state challenges'
+  },
 
   {
     question: 'Core Web Vitals?',
     answer: 'LCP, CLS, INP',
     detailedAns:
-      'LCP = loading (<2.5s), CLS = stability (<0.1), INP = responsiveness (<200ms). Key for UX and SEO.'
+      'LCP: loading speed\nCLS: layout stability\nINP: responsiveness\n\nThese directly impact UX and SEO.\n\nOptimizing them improves engagement and conversions.'
   },
+
   {
     question: 'Improve LCP?',
-    answer: 'Optimize largest element',
+    answer: 'Optimize critical rendering path',
     detailedAns:
-      'Use WebP images, preload assets, reduce TTFB, SSR/SSG, CDN.'
+      'Optimize images, preload assets, reduce TTFB, use SSR/SSG.\n\nFocus on the largest visible element.'
   },
+
   {
     question: 'Reduce CLS?',
-    answer: 'Prevent layout shifts',
+    answer: 'Stabilize layout',
     detailedAns:
-      'Set dimensions, reserve space, avoid dynamic shifts.'
+      'Set dimensions, reserve space, avoid unexpected DOM changes.'
   },
+
   {
     question: 'Improve INP?',
     answer: 'Reduce main thread work',
     detailedAns:
-      'Code split, reduce JS, avoid long tasks, use Web Workers.'
-  },
-  {
-    question: 'Measure performance?',
-    answer: 'Lighthouse + Web Vitals',
-    detailedAns:
-      'Use Lighthouse, DevTools, and RUM tools.'
-  },
-  {
-    question: 'TTFB?',
-    answer: 'Server response time',
-    detailedAns:
-      'Impacts LCP. Improve with CDN and caching.'
-  },
-  {
-    question: 'Next.js performance?',
-    answer: 'SSR + image optimization',
-    detailedAns:
-      'Improves LCP and reduces bundle size.'
-  },
-  {
-    question: 'Render-blocking resources?',
-    answer: 'JS/CSS delaying render',
-    detailedAns:
-      'Fix with async/defer and splitting.'
+      'Split code, reduce JS, avoid long tasks, use Web Workers.'
   }
 ];
 
